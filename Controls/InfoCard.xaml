@@ -1,0 +1,70 @@
+﻿<!-- Controls/InfoCard.xaml -->
+<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="OGAS.Controls.InfoCard"
+             x:Name="infoCard" av:DesignWidth="142.251">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid x:Name="grid" Margin="8,0">
+        <!-- 头部图标 -->
+        <Border CornerRadius="20" Background="#7163ba" Width="60" Height="60" VerticalAlignment="Top" Margin="0,-30,0,0" Panel.ZIndex="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="270" Opacity="0.3" Color="#7163ba"/>
+            </Border.Effect>
+            <Icon:PackIconMaterial Kind="{Binding Icon, ElementName=infoCard}" Width="30" Height="30" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- 紫色边框，显示在鼠标悬停或激活时 -->
+        <Border x:Name="BorderElement" BorderThickness="1" BorderBrush="#7163ba" CornerRadius="20" Margin="-5">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=grid}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsActive, ElementName=infoCard}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+
+        <!-- 主界面内容 -->
+        <Border Background="White" CornerRadius="20" Padding="10">
+            <StackPanel>
+                <!-- 标题 -->
+                <TextBlock  Foreground="#5d5382" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+
+                <!-- 描述 -->
+                <TextBlock Text="{Binding Desc, ElementName=infoCard}" Foreground="#958ead" HorizontalAlignment="Center" Margin="0,5,0,10"/>
+
+                <!-- 数值 -->
+                <TextBlock Text="{Binding Value, ElementName=infoCard}" Foreground="#7163ba" FontSize="24" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+
+                <!-- 百分比显示 -->
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 固定文本，可以根据需求调整 -->
+                    <TextBlock Text="百分比:" Foreground="#625986"/>
+
+                    <!-- 绑定百分比值 -->
+                    <TextBlock Text="{Binding Percentage, ElementName=infoCard, StringFormat=\{0:F2\}%}" Foreground="#625986" Grid.Column="1" TextAlignment="Right"/>
+                </Grid>
+
+                <!-- 进度条，绑定到 Percentage 属性 -->
+                <ProgressBar Value="{Binding Percentage, ElementName=infoCard}" Minimum="0" Maximum="100" Height="10" Margin="0,5,0,10"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

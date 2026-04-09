@@ -1,0 +1,309 @@
+﻿<Page x:Class="OGAS.Views.DataCollection"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:oxy="http://oxyplot.org/wpf"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:OGAS.ViewModels" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      Title="DataCollection">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <TabControl Margin="0,30,20,10">
+
+            <!-- 产品管理 Tab -->
+            <TabItem Header="产品管理">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 表单控件 -->
+                    <Label Content="名称:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="产品类别:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox Grid.Row="0" Grid.Column="3" Margin="5" SelectedValue="{Binding ProductCategory, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content">
+                        <ComboBoxItem Content="原料"/>
+                        <ComboBoxItem Content="加工产品"/>
+                        <ComboBoxItem Content="制成品"/>
+                    </ComboBox>
+
+                    <Label Content="材料类别:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" SelectedValue="{Binding MaterialCategory, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content">
+                        <ComboBoxItem Content="有机"/>
+                        <ComboBoxItem Content="金属"/>
+                        <ComboBoxItem Content="无机非金属"/>
+                    </ComboBox>
+
+                    <Label Content="描述:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Margin="5" Text="{Binding ProductDescription, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="计量单位:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="3" Margin="5" SelectedValue="{Binding ProductUnit, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content">
+                        <ComboBoxItem Content="吨"/>
+                        <ComboBoxItem Content="升"/>
+                        <ComboBoxItem Content="立方米"/>
+                    </ComboBox>
+
+                    <Label Content="每单位价格:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ProductPrice, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <!-- 按钮 -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="5">
+                        <Button Content="保存" Width="75" Margin="5" 
+                                Command="{Binding 保存Command}" />
+                        <Button Content="更新" Width="75" Margin="5" 
+                                Command="{Binding 更新Command}" />
+                        <Button Content="删除" Width="75" Margin="5" 
+                                Command="{Binding 删除Command}" />
+                        <Button Content="重置" Width="75" Margin="5" 
+                                Command="{Binding 重置Command}" />
+                        <CheckBox Content="设置材料" Width="86" Margin="5" Height="15" IsChecked="{Binding Is设置材料选中}" />
+                        <CheckBox Content="设置产品" Width="86" Margin="5" Height="15" IsChecked="{Binding Is设置产品选中}" />
+                    </StackPanel>
+
+                    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 第一个 DataGrid -->
+                        <DataGrid Grid.Column="0" AutoGenerateColumns="False" Margin="5"
+                      ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct, Mode=TwoWay}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding 产品ID}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="名称" Binding="{Binding 名称}" />
+                                <DataGridTextColumn Header="产品类别" Binding="{Binding 产品类别}" />
+                                <DataGridTextColumn Header="描述" Binding="{Binding 描述}" />
+                                <DataGridTextColumn Header="计量单位" Binding="{Binding 计量单位}" />
+                                <DataGridTextColumn Header="每单位价格" Binding="{Binding 每单位价格}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- 第二个 DataGrid -->
+                        <DataGrid Grid.Column="1" AutoGenerateColumns="False" Margin="5"
+                      ItemsSource="{Binding Materials}" SelectedItem="{Binding SelectedMaterial, Mode=TwoWay}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding 材料ID}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="名称" Binding="{Binding 名称}" />
+                                <DataGridTextColumn Header="材料类别" Binding="{Binding 材料类别}" />
+                                <DataGridTextColumn Header="描述" Binding="{Binding 描述}" />
+                                <DataGridTextColumn Header="计量单位" Binding="{Binding 计量单位}" />
+                                <DataGridTextColumn Header="每单位价格" Binding="{Binding 每单位价格}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            
+            <!-- 加工厂管理 Tab -->
+            <TabItem Header="加工厂管理">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 表单控件 -->
+                    <Label Content="名称:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding FactoryName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="位置:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Margin="5" Text="{Binding FactoryLocation, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="联系人信息:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Margin="5" Text="{Binding FactoryContact, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="加工效率:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding FactoryEfficiency, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="设备数量:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Margin="5" Text="{Binding FactoryEquipmentCount, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="生产设备:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5"  ItemsSource="{Binding Equipments}"  SelectedItem="{Binding FactorySelectedEquipment, UpdateSourceTrigger=PropertyChanged}"  DisplayMemberPath="名称" SelectedValuePath="生产设备ID"/>
+
+                    <!-- 按钮 -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="5">
+                        <Button Content="保存" Width="75" Margin="5"
+                                Command="{Binding 保存加工厂Command}"/>
+                        <Button Content="更新" Width="75" Margin="5"
+                                Command="{Binding 更新加工厂Command}"/>
+                        <Button Content="删除" Width="75" Margin="5"
+                                Command="{Binding 删除加工厂Command}"/>
+                        <Button Content="重置" Width="75" Margin="5"
+                                Command="{Binding 重置加工厂Command}"/>
+                    </StackPanel>
+
+                    <!-- DataGrid -->
+                    <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" Margin="5"
+                              ItemsSource="{Binding Factories}" SelectedItem="{Binding SelectedFactory, Mode=TwoWay}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding 加工厂ID}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="名称" Binding="{Binding 名称}" />
+                            <DataGridTextColumn Header="位置" Binding="{Binding 位置}" />
+                            <DataGridTextColumn Header="描述" Binding="{Binding 描述}" />
+                            <DataGridTextColumn Header="联系人信息" Binding="{Binding 联系人信息}" />
+                            <DataGridTextColumn Header="加工效率" Binding="{Binding 加工效率}" />
+                            <DataGridTextColumn Header="设备数量" Binding="{Binding 设备数量}" />
+                            <DataGridTextColumn Header="生产设备" Binding="{Binding 生产设备.名称}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- 生产工艺管理 Tab -->
+            <TabItem Header="生产工艺管理">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 表单控件 -->
+                    <Label Content="工艺名称:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding ProcessName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="描述:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Margin="5" Text="{Binding ProcessRemarks, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="质量标准:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding ProcessQualityStandard, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="安全指引:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Margin="5" Text="{Binding ProcessSafetyGuidelines, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="标准加工时间:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Margin="5" Text="{Binding ProcessStandardTime, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="产品:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" Margin="5"  ItemsSource="{Binding ProcessProducts}"  SelectedItem="{Binding ProcessSelectedProduct, UpdateSourceTrigger=PropertyChanged}"  DisplayMemberPath="名称" SelectedValuePath="产品ID"/>
+
+                    <Label Content="材料:" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox Grid.Row="3" Grid.Column="3" Margin="5"  ItemsSource="{Binding ProcessMaterials}"  SelectedItem="{Binding ProcessSelectedMaterial, UpdateSourceTrigger=PropertyChanged}"  DisplayMemberPath="名称" SelectedValuePath="材料ID"/>
+
+                    <Label Content="生产设备:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" Margin="5"  ItemsSource="{Binding ProcessEquipments}"  SelectedItem="{Binding ProcessSelectedEquipment, UpdateSourceTrigger=PropertyChanged}"  DisplayMemberPath="名称" SelectedValuePath="生产设备ID"/>
+
+                    <!-- 按钮 -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="5">
+                        <Button Content="保存" Width="75" Margin="5"
+                                Command="{Binding 保存生产工艺Command}"/>
+                        <Button Content="更新" Width="75" Margin="5"
+                                Command="{Binding 更新生产工艺Command}"/>
+                        <Button Content="删除" Width="75" Margin="5"
+                                Command="{Binding 删除生产工艺Command}"/>
+                        <Button Content="重置" Width="75" Margin="5"
+                                Command="{Binding 重置生产工艺Command}"/>
+                    </StackPanel>
+
+                    <!-- DataGrid -->
+                    <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" Margin="5"
+                              ItemsSource="{Binding Processes}" SelectedItem="{Binding SelectedProcess, Mode=TwoWay}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding 工艺ID}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="工艺名称" Binding="{Binding 工艺名称}" />
+                            <DataGridTextColumn Header="质量标准" Binding="{Binding 质量标准}" />
+                            <DataGridTextColumn Header="安全指引" Binding="{Binding 安全指引}" />
+                            <DataGridTextColumn Header="备注" Binding="{Binding 备注}" />
+                            <DataGridTextColumn Header="标准加工时间" Binding="{Binding 标准加工时间}" />
+                            <DataGridTextColumn Header="产品" Binding="{Binding 产品.名称}" />
+                            <DataGridTextColumn Header="材料" Binding="{Binding 材料.名称}" />
+                            <DataGridTextColumn Header="生产设备" Binding="{Binding 生产设备.名称}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- 生产设备管理 Tab -->
+            <TabItem Header="生产设备管理">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 表单控件 -->
+                    <Label Content="名称:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding EquipmentName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="描述:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding EquipmentDescription, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="容量:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Margin="5" Text="{Binding EquipmentCapacity, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="效率:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Margin="5" Text="{Binding EquipmentEfficiency, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <!-- 按钮 -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="5">
+                        <Button Content="保存" Width="75" Margin="5"
+                                Command="{Binding 保存生产设备Command}"/>
+                        <Button Content="更新" Width="75" Margin="5"
+                                Command="{Binding 更新生产设备Command}"/>
+                        <Button Content="删除" Width="75" Margin="5"
+                                Command="{Binding 删除生产设备Command}"/>
+                        <Button Content="重置" Width="75" Margin="5"
+                                Command="{Binding 重置生产设备Command}"/>
+                    </StackPanel>
+
+                    <!-- DataGrid -->
+                    <DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" AutoGenerateColumns="False" Margin="5,34,0,15"
+                              ItemsSource="{Binding Equipments}" SelectedItem="{Binding SelectedEquipment, Mode=TwoWay}" Grid.RowSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding 生产设备ID}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="名称" Binding="{Binding 名称}" />
+                            <DataGridTextColumn Header="描述" Binding="{Binding 描述}" />
+                            <DataGridTextColumn Header="容量" Binding="{Binding 容量}" />
+                            <DataGridTextColumn Header="效率" Binding="{Binding 效率}" />
+                        </DataGrid.Columns>
+                    </DataGrid> 
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </ScrollViewer>
+</Page>
